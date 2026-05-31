@@ -79,6 +79,9 @@ spremotetablet  46998/tcp               # Capture handwritten signatures
 
 Linuxのハイポートは32768番からなので、34567番のedi_service以降は重複しています。もちろん、先にプロセスが起動してそのポート番号を使用し始めた場合、同じポート番号は使用されません。
 
+# ICMP
+
+
 # TCPの通信をWiresharkで見てみよう
 
 ※後で書く
@@ -86,3 +89,7 @@ Linuxのハイポートは32768番からなので、34567番のedi_service以降
 # UDPの通信をWiresharkで見てみよう
 
 ※後で書く
+
+# ICMPの通信をWiresharkで見てみよう
+
+
