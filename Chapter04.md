@@ -1,7 +1,7 @@
 # nftablesとは
 Linuxのパケットフィルタリングは、Linuxカーネルの機能であるnftablesとして実装されています。関連するカーネルモジュールを読み込ませることで利用できます。
 
-nftablesはカーネルの機能であるため、その設定はコマンドなどで行う必要があります。基本的なツールとしてnftコマンドが用意されていますが、実習環境であるAlmaLinuxではfirewalldがフロントエンドとして採用されています。
+nftablesはカーネルの機能ですが、その設定はコマンドなどで行う必要があります。基本的なツールとしてnftコマンドが用意されていますが、実習環境であるAlmaLinuxではfirewalldがフロントエンドとして採用されています。
 
 ## カーネルモジュールの確認
 nftables関連のカーネルモジュールが読み込まれているかどうか確認してみましょう。
@@ -28,7 +28,7 @@ nfnetlink              20480  2 nf_tables
 libcrc32c              12288  4 nf_conntrack,nf_nat,nf_tables,xfs
 ```
 
-様々なカーネルモジュールが読み込まれているのがわかりますが、nf_tablesがnftablesの本体となるカーネルモジュールです。
+nf_tablesがnftablesの本体となるカーネルモジュールです。その他に様々なカーネルモジュールが読み込まれているのがわかります。
 
 # firewalld
 nftablesを操作するためのフロントエンドがfirewalldです。firewalldは、デーモンとして動作するサービスです。
@@ -59,7 +59,7 @@ $ sudo systemctl status firewalld
 # firewall-cmd
 デーモンとして動作しているfirewalldに対して、様々な指示を出すのがfirewall-cmdコマンドです。
 
-パケットフィルタリングの設定を変更して外部からのパケットを受け入れる設定方法は『Linuxサーバー構築標準教科書』で解説していますが、設定の確認について補足として解説しておきます。
+パケットフィルタリングの設定を変更して、外部からのパケットを受け入れる設定方法は『Linuxサーバー構築標準教科書』で解説していますが、設定の確認について補足として解説しておきます。
 
 # パケットフィルタリングの設定を確認する
 現在のfirewalldによるパケットフィルタリングの設定を確認するには、firewall-cmd --list-allコマンドを実行します。
@@ -82,6 +82,8 @@ public (active)
   rich rules:
 ```
 
+servicesで受け入れるパケットをサービス名で定義しています。たとえば、sshが定義されているので、外部からのSSH接続が受け入れられています。
+
 ## ゾーン
 firewalldはゾーンという考え方でパケットフィルタリングを管理しています。特別な構成と設定が必要でない限り、表示されているpublicゾーンに対して設定を行えば、外部とのパケットのやり取りに対してフィルタが設定されます。
 
@@ -92,12 +94,16 @@ $ sudo firewall-cmd --get-zones
 block dmz drop external home internal nm-shared public trusted work
 ```
 
+publicの他、様々なゾーンが定義されているのが分かります。
+
 firewall-cmd --get-default-zoneコマンドで、デフォルトに設定されているゾーンが確認できます。
 
 ```
 $ sudo firewall-cmd --get-default-zone
 public
 ```
+
+publicがデフォルトのゾーンとして定義されています。外部とのパケットのやり取りは、デフォルトでpublicゾーンに入ってきて、定義されているルールによって処理されることになります。
 
 ## ターゲット
 ターゲットは、そのゾーンに入ったパケットが設定されているルールにマッチしなかった場合、どのような処理を行うのかを定義しています。
@@ -116,23 +122,144 @@ public
 - default
 REJECT同様の振るまいをしますが、いくつかの違いがあります。PINGなどで使われるICMPは通します。
 
-確認した設定ではdefaultがターゲットになっているので、ICMP以外のパケットはルールで許可しない限り拒否されます。
+確認した設定ではpublicゾーンのdefaultはターゲットに設定されているので、ICMP以外のパケットはルールで許可しない限り拒否されます。
+
+## ターゲットの変更
+ターゲットを変更してみましょう。現在のdefaultからREJECT、DROPに変更して動作を確認してみます。
+
+### ターゲットREJECTに設定
+ターゲットをREJECTに設定してみます。
+
+```
+$ sudo firewall-cmd --zone=public --set-target=REJECT --permanent
+```
+
+設定を有効にするには、firewall-cmd --reloadコマンドを実行します。
+
+```
+$ sudo firewall-cmd --reload
+success
+```
+
+設定を確認します。
+
+```
+$ sudo firewall-cmd --zone=public --get-target --permanent
+REJECT
+```
+
+動作を確認するため、ホストOSからpingコマンドを実行します。
+
+```
+$ ping 192.168.56.51
+PING 192.168.56.51 (192.168.56.51): 56 data bytes
+92 bytes from 192.168.56.51: Communication prohibited by filter
+Vr HL TOS  Len   ID Flg  off TTL Pro  cks      Src      Dst
+ 4  5  00 5400 f180   0 0000  40  01 9740 192.168.56.100  192.168.56.51
+
+^C
+```
+
+ターゲットをREJECTにすると、nftablesはパケットを拒否したことを通知します。そのため、pingコマンドは拒否されたことを表示します。パケットの拒否の通知もICMPによって行われます。
+
+### ターゲットDROPに設定
+ターゲットをDROPに設定してみます。
+
+```
+$ sudo firewall-cmd --zone=public --set-target=DROP --permanent
+```
+
+設定を有効にするには、firewall-cmd --reloadコマンドを実行します。
+
+```
+$ sudo firewall-cmd --reload
+success
+```
+
+設定を確認します。
+
+```
+$ sudo firewall-cmd --zone=public --get-target --permanent
+DROP
+```
+
+動作を確認するため、ホストOSからpingコマンドを実行します。
+
+```
+$ ping 192.168.56.51
+PING 192.168.56.51 (192.168.56.51): 56 data bytes
+Request timeout for icmp_seq 0
+^C
+--- 192.168.56.51 ping statistics ---
+2 packets transmitted, 0 packets received, 100.0% packet loss
+```
+
+ターゲットをDROPにすると、nftablesはパケットを拒否したことを通知しません。そのため、pingコマンドはEcho requestに対するEcho replyが返って来ず、タイムアウトしたことを表示します。
 
 ## ICMPの扱い
 ターゲットがdefaultの時、ICMPは受け入れますが、細かい扱いは別途設定されています。
 
-- icmp-block-inversion
-yesに設定すると、icmp-blocksで設定したICMPを受け入れます。noに設定すると、icmp-blocksで設定したICMPを拒否します。
+icmp-block-inversionをnoに設定すると、icmp-blocksで設定したICMPを拒否します。yesに設定すると、icmp-blocksで設定したICMPを受け入れます。
 
-icmp-blocksに設定できるICMPの種類は、firewall-cmd --get-icmptypesコマンドを実行します。
+### ターゲットをdefaultに設定
+ターゲットをdefaultに設定します。
 
 ```
-$ sudo firewall-cmd --get-icmptypes
-[sudo] linuc のパスワード:
-address-unreachable bad-header beyond-scope communication-prohibited destination-unreachable echo-reply echo-request
-（略）
-unknown-header-type unknown-option
+$ sudo firewall-cmd --zone=public --set-target=default --permanent
+success
+$ sudo firewall-cmd --reload
 ```
 
-たとえば、PINGで確認するのはecho-request、それに対する応答はecho-replyです。
+```
+$ sudo firewall-cmd --zone=public --query-icmp-block-inversion
+no
+$ sudo firewall-cmd --list-icmp-blocks
+
+```
+
+icmp-block-inversionはnoなのでicmp-blocksで設定したICMPを拒否しますが、icmp-blocksには何も設定されていないので何も拒否しません。
+
+ホストOSからpingコマンドを実行すると、応答が返ってきます。
+
+```
+ping 192.168.56.51
+PING 192.168.56.51 (192.168.56.51): 56 data bytes
+64 bytes from 192.168.56.51: icmp_seq=0 ttl=64 time=0.394 ms
+^C
+--- 192.168.56.51 ping statistics ---
+1 packets transmitted, 1 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 0.394/0.394/0.394/nan ms
+```
+
+icmp-block-inversionをyesに設定するためには、firewall-cmd --add-icmp-block-inversionコマンドを実行します。
+
+```
+$ sudo firewall-cmd --zone=public --add-icmp-block-inversion
+success
+$ sudo firewall-cmd --zone=public --query-icmp-block-inversion
+yes
+```
+
+ホストOSからpingコマンドを実行すると、エラー応答が返ってきます。
+
+```
+$ ping 192.168.56.51
+PING 192.168.56.51 (192.168.56.51): 56 data bytes
+92 bytes from 192.168.56.51: Communication prohibited by filter
+Vr HL TOS  Len   ID Flg  off TTL Pro  cks      Src      Dst
+ 4  5  00 5400 b7d4   0 0000  40  01 d0ec 192.168.56.100  192.168.56.51
+
+^C
+--- 192.168.56.51 ping statistics ---
+1 packets transmitted, 0 packets received, 100.0% packet loss
+```
+
+icmp-block-inversionをnoに戻すには、firewall-cmd --remove-icmp-block-inversionコマンドを実行します。
+
+```
+$ sudo firewall-cmd --remove-icmp-block-inversion
+success
+$ sudo firewall-cmd --zone=public --query-icmp-block-inversion
+no
+```
 
