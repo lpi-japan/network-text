@@ -411,7 +411,7 @@ no_proxy=localhost,127.0.0.0/8,::1
 Squidがプロキシとして動作していることを確認するために、Squidのアクセスログを表示します。
 
 ```
-sudo tail -f /var/log/squid/access.log
+$ sudo tail -f /var/log/squid/access.log
 ```
 
 ### プロキシ経由でWebサーバーにアクセス
