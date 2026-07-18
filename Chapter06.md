@@ -107,11 +107,13 @@ Linuxでサーバーを動作させていると、ネットワーク障害が発
 1. 仮想マシンをシャットダウンします。
 2. Oracle VirtualBox マネージャーで仮想マシンの設定を呼び出します。
 3. ネットワークアダプター3を有効化します。
-4. ホストオンリーネットワークに割り当てます。
+4. 「ホストオンリーネットワーク」に割り当てます。
 5. ネットワークアダプター4を有効化します。
-6. ホストオンリーネットワークに割り当てます。
+6. 「ホストオンリーネットワーク」に割り当てます。
 7. 仮想マシンを起動します。
 8. 追加した2つのネットワークインターフェースが認識されていることを確認します。
+
+![仮想マシンにネットワークアダプターを追加](image/Ch06/config_add_network.png){width=70%}
 
 ```
 $ ip a
@@ -129,7 +131,7 @@ $ ip a
 まず最初にボンディングデバイスbond0を作成します。ボンディングモードはスイッチ側の設定が不要なbalance-tlbを指定します。
 
 ```
-sudo nmcli connection add type bond con-name bond0 ifname bond0 bond.options "mode=balance-tlb"
+$ sudo nmcli connection add type bond con-name bond0 ifname bond0 bond.options "mode=balance-tlb"
 接続 'bond0' (18203844-95a2-422b-8b97-d60fef859f9a) が正常に追加されました。
 ```
 
@@ -173,8 +175,10 @@ $ sudo nmcli conn add type ethernet slave-type bond con-name bond0-2 ifname enp0
 ### ボンディングデバイスの有効化
 ボンディングデバイスを有効にします。
 
-sudo nmcli conn up bond0
+```
+$ sudo nmcli conn up bond0
 接続が正常にアクティベートされました (controller waiting for ports) (D-Bus アクティブパス: /org/freedesktop/NetworkManager/ActiveConnection/6)
+```
 
 ### ボンディングデバイスの確認
 ボンディングデバイスの状態を確認します。
