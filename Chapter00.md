@@ -18,68 +18,34 @@ https://linuc.org/textbooks/network/
 
 実際にLinuxを操作して、ネットワークの仕組みを理解することができます。
 
-### 本教科書でカバーされない範囲 {.unlisted .unnumbered}
-実習手順の記述を簡潔にするため、LinuCレベル1の学習範囲に含まれるLinuxの基本的な操作やシステム管理についての記述は必要最低限になっています。また、自分で調べることも学習において重要であるため、あえて調べてみる余地を残しています。分からない部分は別途調べて理解を深めてください。
-
-## 想定している実習環境 {.unlisted .unnumbered}
-本教科書は一人で独学自習できることを想定しています。実習環境として、以下の環境を構築しています。
-
-### 仮想マシンを利用 {.unlisted .unnumbered}
-仮想マシンを利用して学習環境を構築します。仮想マシンを利用すると、WindowsやLinux、macOS上の仮想マシンにLinuxをインストールし、動作させることができます。
-
-仮想マシン環境を実現するソフトウェアとして、以下のようなものがあげられます。
-
-- VirtualBox（Windows、Linux、macOS）
-- VMware Workstation（Windows）
-- VMware Fusion（macOS）
-- Parallels Desktop（macOS）
-- UTM（macOS）
-- Linux KVM（Linux）
-
-本教科書では、VirtualBoxをWindows上で実行して解説を進めます。
-
-### OS {.unlisted .unnumbered}
-本教科書では、LinuxディストリビューションとしてAlmaLinuxのバージョン9.7を利用します。
-
-実習例ではIntel/AMD x86_64アーキテクチャに対応したバージョンを利用していますが、ARM版などその他のアーキテクチャに対応したバージョンでも実習を行うことができます。
-
-### ネットワーク {.unlisted .unnumbered}
-実習を行うネットワークはインターネットに接続できることを前提としています。
-
-ソフトウェアのインストールや、ネットワーク接続確認の実習などでインターネット接続が必須となるので、インターネット接続が可能な環境で実習を行ってください。
-
 ## 全体の流れ {.unlisted .unnumbered}
 本教科書では、以下の通りに実習を進めます。
 
-### 1章&nbsp;Linuxサーバー構築の概要 {.unlisted .unnumbered}
-本教科書で行う実習の全体像や事前に説明しておくべき事項を解説しています。
+### 1章 ネットワーク学習環境の構築 {.unlisted .unnumbered}
+実習環境の構築と、VirtualBoxのネットワークについて解説します。また、パケットキャプチャを行うためにWiresharkをインストールします。
 
-### 2章&nbsp;仮想マシン環境の準備 {.unlisted .unnumbered}
-仮想マシンについての解説と、VirtualBoxのインストール、仮想マシンの作成を行います。
+### 2章 IPアドレス {.unlisted .unnumbered}
+インターネットの通信の基盤であるIPの仕組みと、IPアドレスについて解説します。
 
-### 3章&nbsp;Linuxのインストールと設定 {.unlisted .unnumbered}
-仮想マシンにLinuxをインストールします。
+### 3章 TCP/UDP/ICMP {.unlisted .unnumbered}
+IP通信の上で使用される、TCPやUDP、ICMPについて解説します。
 
-### 4章&nbsp;Webサーバーのインストールと設定 {.unlisted .unnumbered}
-LinuxにWebサーバーとしてApache HTTPサーバーをインストールします。
+### 4章 パケットフィルタリング {.unlisted .unnumbered}
+IPアドレスやポート番号などを元にパケット通信の許可や拒否を行うパケットフィルタリングについて解説します。
 
-### 5章&nbsp;DNSサーバーのインストールと設定 {.unlisted .unnumbered}
-LinuxにDNSサーバーとしてBINDをインストールして、ドメインを設定し、名前解決が行えるようにします。複数の仮想マシンを用意し、相互に名前解決で接続できるようにします。
+### 5章 ルーティングとIPマスカレード {.unlisted .unnumbered}
+インターネットの基本的な通信の仕組みであるネットワーク間を接続する仕組みであるルーティングについて解説します。また、Linuxカーネルのアドレス変換の仕組みであるIPマスカレードについて解説します。
 
-### 6章&nbsp;メールサーバーのインストールと設定 {.unlisted .unnumbered}
-LinuxにメールサーバーとしてPostfixやDovecotをインストールし、メールの送受信が行えるように設定します。
-
-### 7章&nbsp;ネットワークとセキュリティの設定 {.unlisted .unnumbered}
-Linuxのネットワークやセキュリティを設定します。
+### 6章 ネットワークインターフェースの管理 {.unlisted .unnumbered}
+ネットワークの通信を担うハードウェアであるネットワークインターフェースについて解説します。複数のネットワークインターフェースを束ねて冗長化する方法も解説します。
 
 ## 執筆者・制作者紹介 {.unlisted .unnumbered}
 本教科書は、オープンなプロジェクト形式で開発を行っています。企画段階から意見交換を行い、事前の技術的な調査、執筆、レビューなどをプロジェクトのメンバーで分担して行っています。
 
-### 宮原&nbsp;徹（バージョン4執筆担当） {.unlisted .unnumbered}
+### 宮原 徹（執筆担当） {.unlisted .unnumbered}
 本教科書は、Linux/オープンソースソフトウェアをこれから勉強する皆さんと、熱心に指導に当たられている先生方の一助になればと思い、作成いたしました。「標準教科書」シリーズ 3部作の改訂を完了させましたが、ネットワークの解説をかなり省略してしまったので、別途補完する形で本教科書を企画、執筆しました。
 
 Linuxはネットワークに接続することでその真価を発揮するので、ネットワークについてもしっかりと理解する一助になれば幸いです。
-
 
 ### バージョン4の開発にご協力をいただいた方々（50音順） {.unlisted .unnumbered}
 - 鯨井 貴博（株式会社ゼウス・エンタープライズ）
@@ -114,7 +80,7 @@ Copyright©️ LPI-Japan. All Rights Reserved.
 フィードバックは誰でも参加できる Slack で受け付けていますので、積極的にご参加ください。Slack参加の詳細は以下の本教科書のWebページを参照してください。
 
 ```
-https://linuc.org/textbooks/server/
+https://linuc.org/textbooks/network/
 ```
 
 ![https://linuc.org/textbooks/server/](image/Ch0/QRserver.png){width=25%}
@@ -142,10 +108,10 @@ LinuCの出題範囲策定や試験開発は、実際に現場で活躍してい
 ### LinuCレベル２ {.unlisted .unnumbered}
 仮想環境を含むLinuxのシステム設計・ネットワーク構築において、アーキテクチャに基づいた設計・導入・保守・問題解決ができるエンジニアの証明（ITSSレベル2）
 
-### LinuCレベル３&nbsp;プラットフォームスペシャリスト・セキュリティスペシャリスト {.unlisted .unnumbered}
+### LinuCレベル３ プラットフォームスペシャリスト・セキュリティスペシャリスト {.unlisted .unnumbered}
 仮想化・自動化などにより柔軟性と可用性を備えたLinuxプラットフォームの構築運用や、セキュアLinuxシステムのためのOSからミドルウェアまでの各層堅牢化や認証認可基盤の構築および攻撃対策を実現できるスペシャリストの証明（ITSSレベル3）
 
-### LinuCレベル４&nbsp;システムアーキテクト {.unlisted .unnumbered}
+### LinuCレベル４ システムアーキテクト {.unlisted .unnumbered}
 オンプレ／クラウド、物理／仮想化を含むシステムのライフサイクル全体を俯瞰して最適なアーキテクチャを設計・構築ができる上級エンジニアの証明（ITSSレベル4）
 
 \pagebreak
