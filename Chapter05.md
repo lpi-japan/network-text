@@ -383,6 +383,14 @@ squid     25084  squid   11u  IPv6  63515      0t0  TCP *:3128 (LISTEN)
 
 TCPのポート番号3128で待ち受けています。UDPのポートがあるのは、プロキシが名前解決を行うための処理をポート固定で行っているためです。
 
+### firewalldの設定変更
+クライアントをSquidに接続させるためには、ポート番号3128への接続を許可する必要があります。firewall-cmdコマンドでfirewalldの設定を変更します。
+
+```
+$ sudo firewall-cmd --add-port=3128/tcp --zone=public --permanent
+$ sudo firewall-cmd --reload
+```
+
 ## クライアントのプロキシ設定
 クライアントのプロキシ設定は、GUIの設定アプリで設定可能です。
 
