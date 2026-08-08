@@ -32,19 +32,19 @@ Linuxでは無線LAN（Wi-Fi）も使用できます。有線LAN同様、オン�
 
 ```
 $ sudo dmesg | grep enp
-[    1.496721] e1000 0000:00:09.0 enp0s9: renamed from eth1
-[    1.545818] e1000 0000:00:08.0 enp0s8: renamed from eth0
-[   13.769478] e1000: enp0s9 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX
-[   13.769757] e1000: enp0s8 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX
+[    3.360306] e1000 0000:00:08.0 enp0s8: renamed from eth1
+[    3.381082] e1000 0000:00:03.0 enp0s3: renamed from eth0
+[   13.890225] e1000: enp0s3 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX
+[   13.950392] e1000: enp0s8 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX
 ```
 
 ### インターフェース名の意味
-e1000はカーネルモジュールとして読み込まれたネットワークインターフェース用のデバイスドライバーです。その後ろがPCIデバイスとしての番号です。頭についている0000:は無視して、00:09.0の部分だけを参照します。それぞれの意味は以下の通りです。
+e1000はカーネルモジュールとして読み込まれたネットワークインターフェース用のデバイスドライバーです。その後ろがPCIデバイスとしての番号です。頭についている0000:は無視して、00:08.0の部分だけを参照します。それぞれの意味は以下の通りです。
 
 | 値 | 意味 |
 | - | - |
 | 00 | PCIバス番号 |
-| 09 | デバイス番号（スロット番号） |
+| 08 | デバイス番号（スロット番号） |
 | 0 | ファンクション番号 |
 
 これらのうち、バス番号（PCIのp）とスロット番号（Slotのs）がインターフェース名に使用されます。ファンクション番号は使用されません。
@@ -64,12 +64,12 @@ e1000はカーネルモジュールとして読み込まれたネットワーク
 使用できる状態のネットワークインターフェースは、ethtoolコマンドを実行することでカーネルモジュールなどの詳細情報を確認できます。
 
 ```
-$ ethtool -i enp0s9
+$ ethtool -i enp0s8
 driver: e1000
-version: 5.14.0-611.49.2.el9_7.aarch64
+version: 5.14.0-687.36.1.el9_8.x86_64
 firmware-version:
 expansion-rom-version:
-bus-info: 0000:00:09.0
+bus-info: 0000:00:08.0
 supports-statistics: yes
 supports-test: yes
 supports-eeprom-access: yes
@@ -118,10 +118,10 @@ Linuxでサーバーを動作させていると、ネットワーク障害が発
 ```
 $ ip a
 （略）
-4: enp0s10: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 08:00:27:1e:cc:4d brd ff:ff:ff:ff:ff:ff
-5: enp0s11: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 08:00:27:06:64:53 brd ff:ff:ff:ff:ff:ff
+4: enp0s9: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:ef:a8:9a brd ff:ff:ff:ff:ff:ff
+5: enp0s10: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:d2:1e:a9 brd ff:ff:ff:ff:ff:ff
 ```
 
 ## ボンディングの設定
@@ -132,7 +132,7 @@ $ ip a
 
 ```
 $ sudo nmcli connection add type bond con-name bond0 ifname bond0 bond.options "mode=balance-tlb"
-接続 'bond0' (18203844-95a2-422b-8b97-d60fef859f9a) が正常に追加されました。
+接続 'bond0' (5e62b315-cbdf-4d92-81db-b5f6b5e29acb) が正常に追加されました。
 ```
 
 ### ネットワークインターフェースの確認
@@ -141,12 +141,12 @@ $ sudo nmcli connection add type bond con-name bond0 ifname bond0 bond.options "
 ```
 $ nmcli device status
 DEVICE   TYPE      STATE                     CONNECTION
+enp0s3   ethernet  接続済み                  enp0s3
 enp0s8   ethernet  接続済み                  enp0s8
-enp0s9   ethernet  接続済み                  enp0s9
 bond0    bond      接続中 (IP 設定を取得中)  bond0
 lo       loopback  接続済み (外部)           lo
 enp0s10  ethernet  切断済み                  --
-enp0s11  ethernet  切断済み                  --
+enp0s9   ethernet  切断済み                  --
 ```
 
 ボンディングデバイスと、追加した2つのネットワークインターフェースが確認できます。
@@ -154,10 +154,10 @@ enp0s11  ethernet  切断済み                  --
 ```
 $ nmcli conn show
 NAME    UUID                                  TYPE      DEVICE
-enp0s8  7923bf5f-a529-3b97-929c-989c7cbdb251  ethernet  enp0s8
-enp0s9  427178ab-8dc1-4a5f-9291-e03412917c39  ethernet  enp0s9
-bond0   18203844-95a2-422b-8b97-d60fef859f9a  bond      bond0
-lo      cc0aaf70-128d-49f9-9814-affa4f920e3c  loopback  lo
+enp0s3  7e141e48-25d0-336e-85dd-dbda3bc81918  ethernet  enp0s3
+enp0s8  e4458f90-f841-37b2-a918-38446edc1d46  ethernet  enp0s8
+bond0   18ac4a63-a638-4945-ac39-aee11552e9b4  bond      bond0
+lo      43b40be6-f1bb-460b-a707-5225b18b77c6  loopback  lo
 ```
 
 追加したネットワークインターフェースは、まだ接続されていない状態です。
@@ -166,10 +166,10 @@ lo      cc0aaf70-128d-49f9-9814-affa4f920e3c  loopback  lo
 2つのネットワークインターフェースをボンディングデバイスに接続します。
 
 ```
-$ sudo nmcli conn add type ethernet slave-type bond con-name bond0-1 ifname enp0s10 master bond0
-接続 'bond0-1' (4f78bed6-bf01-4c54-bee3-6bc6b782857f) が正常に追加されました。
-$ sudo nmcli conn add type ethernet slave-type bond con-name bond0-2 ifname enp0s11 master bond0
-接続 'bond0-2' (fc537992-53b3-4550-901d-4688f71bfa1b) が正常に追加されました。
+$ sudo nmcli conn add type ethernet slave-type bond con-name bond0-1 ifname enp0s9 master bond0
+接続 'bond0-1' (d9f3f510-3e87-4e68-ad91-771431602fad) が正常に追加されました。
+$ sudo nmcli conn add type ethernet slave-type bond con-name bond0-2 ifname enp0s10 master bond0
+接続 'bond0-2' (82f17a99-344b-4cae-b936-6359c1563e0b) が正常に追加されました。
 ```
 
 ### ボンディングデバイスの有効化
@@ -177,7 +177,7 @@ $ sudo nmcli conn add type ethernet slave-type bond con-name bond0-2 ifname enp0
 
 ```
 $ sudo nmcli conn up bond0
-接続が正常にアクティベートされました (controller waiting for ports) (D-Bus アクティブパス: /org/freedesktop/NetworkManager/ActiveConnection/6)
+接続が正常にアクティベートされました (controller waiting for ports) (D-Bus アクティブパス: /org/freedesktop/NetworkManager/ActiveConnection/9)
 ```
 
 ### ボンディングデバイスの確認
@@ -186,12 +186,12 @@ $ sudo nmcli conn up bond0
 ```
 $ nmcli dev status
 DEVICE   TYPE      STATE            CONNECTION
+enp0s3   ethernet  接続済み         enp0s3
 enp0s8   ethernet  接続済み         enp0s8
 bond0    bond      接続済み         bond0
-enp0s9   ethernet  接続済み         enp0s9
 enp0s10  ethernet  接続済み         bond0-2
+enp0s9   ethernet  接続済み         bond0-1
 lo       loopback  接続済み (外部)  lo
-enp0s11  ethernet  切断済み         --
 ```
 
 コネクションも確認します。
@@ -199,12 +199,12 @@ enp0s11  ethernet  切断済み         --
 ```
 $ nmcli conn show
 NAME     UUID                                  TYPE      DEVICE
-enp0s8   22a592c6-1384-3371-879d-17d61b718739  ethernet  enp0s8
-bond0    08baa02c-5629-45c5-93bb-963789a9b14f  bond      bond0
-enp0s9   9aff7784-e7e1-3812-8492-de165c7d5817  ethernet  enp0s9
-bond0-1  c234b6f4-32e5-44cc-a56c-5758b03f24c2  ethernet  enp0s10
-bond0-2  c4d930e7-67c5-47c2-9c77-d920f189af1a  ethernet  enp0s11
-lo       cb9cdcc0-16eb-449c-a046-46a828efe57f  loopback  lo
+enp0s3   7e141e48-25d0-336e-85dd-dbda3bc81918  ethernet  enp0s3
+enp0s8   e4458f90-f841-37b2-a918-38446edc1d46  ethernet  enp0s8
+bond0    5e62b315-cbdf-4d92-81db-b5f6b5e29acb  bond      bond0
+bond0-1  d9f3f510-3e87-4e68-ad91-771431602fad  ethernet  enp0s9
+bond0-2  82f17a99-344b-4cae-b936-6359c1563e0b  ethernet  enp0s10
+lo       43b40be6-f1bb-460b-a707-5225b18b77c6  loopback  lo
 ```
 
 ## ボンディングデバイスの自動構成
@@ -218,14 +218,16 @@ $ sudo nmcli conn modify bond0 connection.autoconnect-slaves 1
 
 ```
 $ sudo nmcli conn down bond0
+接続 'bond0' が正常に非アクティブ化されました (D-Bus アクティブパス: /org/freedesktop/NetworkManager/ActiveConnection/9)
 $ sudo nmcli conn up bond0
+接続が正常にアクティベートされました (controller waiting for ports) (D-Bus アクティブパス: /org/freedesktop/NetworkManager/ActiveConnection/12)
 ```
 
 ボンディングデバイスの状態はprocファイルで確認することもできます。
 
 ```
 $ cat /proc/net/bonding/bond0
-Ethernet Channel Bonding Driver: v5.14.0-687.15.1.el9_8.aarch64
+Ethernet Channel Bonding Driver: v5.14.0-687.36.1.el9_8.x86_64
 
 Bonding Mode: transmit load balancing
 Primary Slave: None
@@ -241,15 +243,15 @@ MII Status: up
 Speed: 1000 Mbps
 Duplex: full
 Link Failure Count: 0
-Permanent HW addr: 08:00:27:1e:cc:4d
+Permanent HW addr: 08:00:27:d2:1e:a9
 Slave queue ID: 0
 
-Slave Interface: enp0s11
+Slave Interface: enp0s9
 MII Status: up
 Speed: 1000 Mbps
 Duplex: full
 Link Failure Count: 0
-Permanent HW addr: 08:00:27:06:64:53
+Permanent HW addr: 08:00:27:ef:a8:9a
 Slave queue ID: 0
 ```
 
@@ -261,37 +263,32 @@ Slave queue ID: 0
 ```
 $ ip a
 （略）
-7: bond0: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/ether 08:00:27:0a:4a:1d brd ff:ff:ff:ff:ff:ff
+8: bond0: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 08:00:27:d2:1e:a9 brd ff:ff:ff:ff:ff:ff
     inet 192.168.56.106/24 brd 192.168.56.255 scope global dynamic noprefixroute bond0
-       valid_lft 3591sec preferred_lft 3591sec
-    inet6 fe80::2530:71d1:b0fc:16de/64 scope link noprefixroute
+       valid_lft 462sec preferred_lft 462sec
+    inet6 fe80::5fe6:1060:df5:6267/64 scope link noprefixroute
        valid_lft forever preferred_lft forever
 ```
 
 ホストOSからボンディングデバイスのIPアドレスに対してsshコマンドでリモートログインを実行してみます。
 
 ```
-$ ssh linuc@192.168.56.106
+>ssh linuc@192.168.56.106
 ```
 
-初めての接続の場合、接続するまでに少し時間がかかる場合があります。
-
-### 最初のpingは通らない？
-VirtualBoxで検証していたところ、初めてアクセスする場合はpingコマンドでの応答は行われませんでした。Wiresharkで確認したところ、初めての通信の際にはEthernetのレベルでボンディングデバイスをすぐに見つけられなかったのが理由な様です。この処理にはARP（Address Resolution Protocol）というプロトコルが使われています。
-
-同様の理由で、sshコマンドによる接続も少し待たされるようです。一度接続すれば、pingコマンドにも応答するようになります。
+リモートログインできたら、接続したままにしておきます。
 
 ## ボンディングデバイスの冗長化テストを行う
 ボンディングデバイスに接続された2つのネットワークインターフェースのうち、片方を無効化します。疑似的にネットワークインターフェース、あるいは接続されているスイッチのポートに障害が発生した状態にします。
 
-VirtualBoxでネットワークアダプター4を無効化します。仮想マシンのウインドウの右下にあるネットワークアイコン（左から4番目）をクリックして「Connect Network Adapter 4」のチェックを外します。仮想マシンの設定画面から、ネットワークアダプター4の「仮想ケーブル接続」のチェックを外しても同様です。
+VirtualBoxでネットワークアダプター4を無効化します。仮想マシンのウインドウの右下にあるネットワークアイコン（左から4番目）をクリックして「Cネットワークアダプターを接続 4」のチェックを外します。仮想マシンの設定画面から、ネットワークアダプター4の「仮想ケーブル接続」のチェックを外しても同様です。
 
 ボンディングデバイスの状態を確認します。
 
 ```
 $ cat /proc/net/bonding/bond0
-Ethernet Channel Bonding Driver: v5.14.0-611.36.1.el9_7.x86_64
+Ethernet Channel Bonding Driver: v5.14.0-687.36.1.el9_8.x86_64
 
 Bonding Mode: transmit load balancing
 Primary Slave: None
@@ -307,7 +304,7 @@ MII Status: down
 Speed: Unknown
 Duplex: Unknown
 Link Failure Count: 1
-Permanent HW addr: 08:00:27:6e:4c:c5
+Permanent HW addr: 08:00:27:d2:1e:a9
 Slave queue ID: 0
 
 Slave Interface: enp0s9
@@ -315,11 +312,11 @@ MII Status: up
 Speed: 1000 Mbps
 Duplex: full
 Link Failure Count: 0
-Permanent HW addr: 08:00:27:6c:00:8a
+Permanent HW addr: 08:00:27:ef:a8:9a
 Slave queue ID: 0
 ```
 
-片方のネットワークインターフェースのMII Statusがdownになっているのがわかります。
+片方のネットワークインターフェースenp0s10のMII Statusがdownになっているのがわかります。
 
-この状態で再度ボンディングデバイスのIPアドレスに接続できることを確認します。
+この状態で、先ほど実行したSSHのリモートログインの接続が切断されず継続されていることを確認します。
 
