@@ -94,7 +94,7 @@ firewalldはゾーンという考え方でパケットフィルタリングを�
 firewall-cmd --get-zonesコマンドで、定義されているゾーンの一覧が確認できます。
 
 ```
-$ sudo firewall-cmd --get-zones
+$ firewall-cmd --get-zones
 block dmz drop external home internal nm-shared public trusted work
 ```
 
