@@ -113,7 +113,10 @@ Linuxでサーバーを動作させていると、ネットワーク障害が発
 7. 仮想マシンを起動します。
 8. 追加した2つのネットワークインターフェースが認識されていることを確認します。
 
-![仮想マシンにネットワークアダプターを追加](image/Ch06/config_add_network.png){width=70%}
+![仮想マシンにネットワークアダプター3を追加](image/Ch06/config_add_network3.png){width=70%}
+
+![仮想マシンにネットワークアダプター4を追加](image/Ch06/config_add_network4.png){width=70%}
+
 
 ```
 $ ip a
