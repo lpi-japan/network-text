@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BUILD_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "${BUILD_DIR}/.." && pwd)"
 OUT_DIR="${ROOT_DIR}/tmp"
 VER="$(grep -oP 'Ver\.\d+\.\d+\.\d+' "${ROOT_DIR}/config-pdf.yaml" | head -1 | sed 's/^Ver\.//')"
 OUTPUT_PDF="${OUT_DIR}/networktext_${VER}.pdf"
@@ -18,7 +19,7 @@ case "${MODE}" in
 esac
 
 if ! command -v pandoc >/dev/null 2>&1 || ! command -v lualatex >/dev/null 2>&1; then
-  exec "${ROOT_DIR}/scripts/with-build-image.sh" "./build-pdf.sh ${MODE}"
+  exec "${BUILD_DIR}/with-build-image.sh" "./build/build-pdf.sh ${MODE}"
 fi
 
 mkdir -p "${OUT_DIR}"
@@ -41,7 +42,7 @@ build_one() {
     extra=(-M no-cover=true)
   fi
   pandoc Chapter00.md -o preface.tex
-  pandoc -d config-pdf.yaml --template template.tex -B preface.tex "${chapters[@]}" \
+  pandoc -d config-pdf.yaml --template build/template.tex -B preface.tex "${chapters[@]}" \
     "${extra[@]}" -o "${output}"
   rm -f preface.tex
   echo "Output: ${output}"

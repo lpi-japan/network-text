@@ -74,8 +74,8 @@ jobs:
       - name: Build PDF
         run: |
           echo "Using image: ${{ inputs.image_ref }}"
-          chmod +x ./build-pdf.sh
-          ./build-pdf.sh cover
+          chmod +x ./build/build-pdf.sh
+          ./build/build-pdf.sh cover
       - name: Upload PDF artifact
         if: always()
         uses: actions/upload-artifact@v7
@@ -108,8 +108,8 @@ jobs:
       - name: Build PDF (no cover)
         run: |
           echo "Using image: ${{ inputs.image_ref }}"
-          chmod +x ./build-pdf.sh
-          ./build-pdf.sh no-cover
+          chmod +x ./build/build-pdf.sh
+          ./build/build-pdf.sh no-cover
       - name: Upload PDF no-cover artifact
         if: always()
         uses: actions/upload-artifact@v7
@@ -140,8 +140,8 @@ jobs:
       - name: Build EPUB
         run: |
           echo "Using image: ${{ inputs.image_ref }}"
-          chmod +x ./build-epub.sh ./scripts/with-build-image.sh
-          ./build-epub.sh
+          chmod +x ./build/build-epub.sh ./build/with-build-image.sh
+          ./build/build-epub.sh
       - name: Upload EPUB artifact
         if: always()
         uses: actions/upload-artifact@v7

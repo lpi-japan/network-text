@@ -7,9 +7,9 @@ Linuxネットワーク標準教科書の開発用リポジトリ。
 ## ローカルビルド
 
 ```bash
-docker build -t ghcr.io/lpi-japan/network-text:local .
-./build-pdf.sh          # tmp/networktext_<ver>.pdf と _no_cover.pdf
-./build-epub.sh         # tmp/networktext_<ver>.epub
+docker build -t ghcr.io/lpi-japan/network-text:local build
+./build/build-pdf.sh    # tmp/networktext_<ver>.pdf と _no_cover.pdf
+./build/build-epub.sh   # tmp/networktext_<ver>.epub
 ```
 
 ホストに pandoc / lualatex が無い場合、スクリプトが上記イメージ内で再実行する。

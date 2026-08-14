@@ -20,10 +20,10 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends curl fonts-takao fonts-ipafont xz-utils \
     && rm -rf /var/lib/apt/lists/*
 
-COPY docker/install-tlmgr-packages.sh /usr/local/bin/install-tlmgr-packages.sh
+COPY install-tlmgr-packages.sh /usr/local/bin/install-tlmgr-packages.sh
 RUN chmod +x /usr/local/bin/install-tlmgr-packages.sh \
     && install-tlmgr-packages.sh
 
-COPY docker/install-pandoc-crossref.sh /usr/local/bin/install-pandoc-crossref.sh
+COPY install-pandoc-crossref.sh /usr/local/bin/install-pandoc-crossref.sh
 RUN chmod +x /usr/local/bin/install-pandoc-crossref.sh \
     && install-pandoc-crossref.sh

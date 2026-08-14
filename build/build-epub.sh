@@ -1,26 +1,27 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TOOL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "${TOOL_DIR}/.." && pwd)"
 OUT_DIR="${ROOT_DIR}/tmp"
 HL_CSS_KINDLE="${OUT_DIR}/.highlighting-kindle.css"
 VER="$(grep -oP 'Ver\.\d+\.\d+\.\d+' "${ROOT_DIR}/config-epub.yaml" | head -1 | sed 's/^Ver\.//')"
 OUTPUT="${OUT_DIR}/networktext_${VER}.epub"
-BUILD_DIR="${ROOT_DIR}/.epub-build"
+EPUB_BUILD="${ROOT_DIR}/.epub-build"
 
 if ! command -v pandoc >/dev/null 2>&1 || ! command -v pandoc-crossref >/dev/null 2>&1; then
-  exec "${ROOT_DIR}/scripts/with-build-image.sh" "./build-epub.sh"
+  exec "${TOOL_DIR}/with-build-image.sh" "./build/build-epub.sh"
 fi
 
-mkdir -p "${OUT_DIR}" "${BUILD_DIR}"
-rm -rf "${BUILD_DIR:?}/"*
+mkdir -p "${OUT_DIR}" "${EPUB_BUILD}"
+rm -rf "${EPUB_BUILD:?}/"*
 
 # PDF と同様、原稿を結合せず複数入力で渡す。
 inputs=()
 for f in $(ls -1 "${ROOT_DIR}"/Chapter*.md | LC_ALL=C sort -V); do
   base="$(basename "${f}")"
-  sed 's/^####.*/#& {-}/' "${f}" > "${BUILD_DIR}/${base}"
-  inputs+=("${BUILD_DIR}/${base}")
+  sed 's/^####.*/#& {-}/' "${f}" > "${EPUB_BUILD}/${base}"
+  inputs+=("${EPUB_BUILD}/${base}")
 done
 
 if ((${#inputs[@]} == 0)); then
@@ -64,7 +65,7 @@ prepare_kindle_highlighting_css
     -M "crossrefYaml=crossref.yaml" \
     --metadata-file=config-epub.yaml \
     --epub-cover-image=image/Cover/電子版表紙_300dpi_2480x3508.png \
-    --css=epub.css \
+    --css=build/epub.css \
     -V highlighting-css="$(cat "${HL_CSS_KINDLE}")"
 )
 

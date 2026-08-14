@@ -2,12 +2,13 @@
 # Host にビルド用ツールチェーンが無いとき、イメージ内で COMMAND を再実行する。
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+BUILD_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "${BUILD_DIR}/.." && pwd)"
 IMAGE="${TEXT_IMAGE:-ghcr.io/lpi-japan/network-text:local}"
 
 if ! docker image inspect "${IMAGE}" >/dev/null 2>&1; then
   echo "Building image: ${IMAGE}" >&2
-  docker build -f "${ROOT_DIR}/Dockerfile" -t "${IMAGE}" "${ROOT_DIR}"
+  docker build -f "${BUILD_DIR}/Dockerfile" -t "${IMAGE}" "${BUILD_DIR}"
 fi
 
 exec docker run --rm -i \
