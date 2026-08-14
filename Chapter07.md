@@ -1,17 +1,31 @@
-# はじめに
+# Ubuntuのネットワーク管理
 この章では、Ubuntuのネットワーク管理について解説します。
-なお、操作はUbuntu26.04LTS/24.04LTSを使っています。
 
-## Ubuntuのネットワーク管理
-Ubuntuのネットワーク管理ではnetplanが設定の管理を行い、OSのバックエンド(レンダラー)がネットワークインターフェイスにIPアドレスなどを付与します。
+## 実習で使用するUbuntuのバージョン
+Ubuntuは2年おきにLTS（Long Term Support）と呼ばれる長期サポート版のバージョンがリリースされています。
+本教科書の実習環境では、Ubuntu 26.04 LTS/24.04 LTSを使っています。
 
-/etc/netplan/配下の*.yamlファイルに設定を記載し、生成されたコンフィグをレンダラーが使用します。
+### 実習環境の構築
+実習環境の構築は、VirtualBoxの仮想マシンについては第1章を、OSのインストールは「Linuxサーバー構築標準教科書 Ubuntu版」を参考に行ってください。
+
+「Linuxサーバー構築標準教科書」ダウンロードページ
+https://linuc.org/textbooks/server/
+
+## Ubuntuのネットワーク設定はNetplanを使用
+Ubuntuのネットワーク管理ではNetplanが設定の管理を行い、OSのバックエンド(レンダラー)がネットワークインターフェイスにIPアドレスなどを付与します。
+Netplanは、/etc/netplan/配下の*.yamlファイルに設定を記載し、それぞれのレンダラーに合わせてコンフィグを生成します。
+
 レンダラーは、Ubuntu DesktopではNetworkManager、Ubuntu Serverではsystemd-networkdが担います。
 
 ![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network1.png){width=70%}
 
+基本的な使用方法ではNetplanだけを見ておけばよいので、管理者がレンダラーの違いを意識する必要はありません。
+
 ## Ubuntu Desktopでのネットワーク設定
-Ubuntu DesktopではGUI操作でネットワーク設定を行います。
+Ubuntu Desktopでは、AlmaLinux同様にGUI設定ツールやnmtuiコマンド、nmcliコマンドが使用できます。
+
+ここではGUI操作でネットワーク設定を行います。
+
 タスクバー(画面の例だと右上)から設定アイコンをクリックし、ネットワークメニューから設定を行います。
 
 ![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network2.png){width=70%}
