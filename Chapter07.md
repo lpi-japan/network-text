@@ -109,11 +109,17 @@ network:
         addresses: [8.8.8.8, 8.8.4.4, 1.1.1.1]
 ```
 
-### Netplanの設定変更の適用
-Netplanの設定変更の適用は、netplan applyコマンドを実行します。
-
+変更の適用は、netplan tryを実施します。
+netplan tryでは即設定の確定を行わず、猶予時間(デフォルトでは120秒、--timeoutオプションで指定可能)が設定されます。
+その猶予期間中にリモートアクセス(ssh)など必要な通信が問題なければ、Enterを押下し設定を確定します。
+Enterを押下しなかった場合は、コマンド実施前の設定にロールバックされます。
+なお、即設定の確定をしたい場合は、netplan applyを使います。
 ```
-ubuntu@ubuntu2604:/etc/netplan$ sudo netplan apply
+ubuntu@ubuntu2604:/etc/netplan$ sudo netplan try
+Do you want to keep these settings?
+Press ENTER before the timeout to accept the new configuration
+Changes will revert in  111 seconds
+Configuration accepted
 
 ubuntu@ubuntu2604:~$ ip addr show
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
