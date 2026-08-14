@@ -156,29 +156,32 @@ Gateway=192.168.1.1
 https://netplan.readthedocs.io/en/stable/multi-nic-vm-host-with-bonds-and-vlans/
 
 ## パケットフィルタリング
-Ubuntuのパケットフィルタリングでは、ufw(Uncomplicated FireWall)を使用します。
+Ubuntuのパケットフィルタリングでは、UFW(Uncomplicated FireWall)を使用します。
 
-ufwの動作を確認するため、Webサーバであるapache2をインストールします。
+UFWの動作を確認するため、Webサーバであるapache2をインストールします。
 ```
 ubuntu@ubuntu2604:~$ sudo apt update
 
 ubuntu@ubuntu2604:~$ sudo apt install apache2
 ```
 
-インストール後、UbuntuのIP宛てに他PCのブラウザよりアクセスすると、
-「It works!」と書かれたデフォルトページが表示されます、
+インストール後、UbuntuのIP宛てに他PCのブラウザよりアクセスすると、「It works!」と書かれたデフォルトページが表示されます。初期状態ではUFWは非アクティブとなっており、Ubuntuへアクセスしてくる通信は制御していません。
 
 ![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network7.png){width=70%}
 
-では、ufwの設定を行います。
-初期状態ではufwは非アクティブとなっており、Ubuntuへアクセスしてくる通信は制御していません。
+では、UFWの設定を行います。
+
+### UFWの状態を確認
+まず、UFWの状態を確認します。
+
 ```
 ubuntu@ubuntu2604:~$ sudo ufw status
 Status: inactive
 ```
 
-この状態でufwをアクティブ(有効化)すると、全ての通信をブロックしてしまうので、
-サーバの管理に必要なssh(22/tcp)やhttp/https(80/tcp・443/tcp)への通信を許可します。
+### UFWの制御ルールを追加
+この状態でUFWをアクティブ(有効化)すると、全ての通信をブロックしてしまうので、サーバの管理に必要なSSH(22/tcp)や、Webサーバーへのアクセスで必要になるHTTP/HTTPS(80/tcp・443/tcp)への通信を許可します。
+
 ```
 ubuntu@ubuntu2604:~$ sudo ufw allow proto tcp from 192.168.1.0/24 to any port 22
 Rules updated
@@ -190,14 +193,18 @@ ubuntu@ubuntu2604:~$ sudo ufw allow proto tcp from 192.168.1.0/24 to any port 44
 Rules updated
 ```
 
-ufwをアクティブにします。
+### UFWをアクティブ化
+UFWをアクティブにします。
+
 ```
 ubuntu@ubuntu2604:~$ sudo ufw enable
 Command may disrupt existing ssh connections. Proceed with operation (y|n)? y
 Firewall is active and enabled on system startup
 ```
 
-ufwの制御ルールを確認します。
+### UFWの制御ルールの確認
+UFWの制御ルールを確認します。
+
 ```
 ubuntu@ubuntu2604:~$ sudo ufw status
 Status: active
@@ -209,7 +216,14 @@ To                         Action      From
 443/tcp                    ALLOW       192.168.1.0/24
 ```
 
-試しにhttp/https(80/tcp・443/tcp)の通信を拒否してみます。
+### UFWの動作確認
+ブラウザからWebサーバーにアクセスできることを確認してみてください。
+
+ルールで許可しているので、変わらずアクセスできることが確認できます。
+
+### Webサーバーへのアクセスを拒否してみる
+試しにHTTP/HTTPS(80/tcp・443/tcp)の通信を拒否してみます。
+
 ```
 ubuntu@ubuntu2604:~$ sudo ufw deny proto tcp from 192.168.1.0/24 to any port 443
 Rule updated
