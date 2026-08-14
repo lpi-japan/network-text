@@ -35,10 +35,13 @@ Ubuntu Desktopでは、AlmaLinux同様にGUI設定ツールやnmtuiコマンド�
 ![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network3.png){width=70%}
 ![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network4.png){width=70%}
 
+
+### 固定IPアドレスを設定する
 固定IPアドレスなどを設定する場合、手動を選択します。
 
 ![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network5.png){width=70%}
 
+### Wi-Fiを設定する
 また、無線NW(Wi-Fi)は、Wi-Fiメニューから設定を行います。
 
 ![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network6.png){width=70%}
@@ -46,7 +49,8 @@ Ubuntu Desktopでは、AlmaLinux同様にGUI設定ツールやnmtuiコマンド�
 ## Ubuntu Serverでのネットワーク設定
 Ubuntu ServerではCLI(コマンド)操作でネットワーク設定を行います。
 
-設定を確認すると、IPアドレスとして192.168.1.143、ゲートウェイは192.168.1.1が設定されていることが分かります。
+### IPアドレスとデフォルトゲートウェイを確認する
+設定を確認すると、IPアドレスとして192.168.1.143、デフォルトゲートウェイは192.168.1.1が設定されていることが分かります。
 ```
 ubuntu@ubuntu2604:~$ ip addr show
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
@@ -69,7 +73,9 @@ ubuntu@ubuntu2604:~$ ip route show
 default via 192.168.1.1 dev enp0s3 proto dhcp src 192.168.1.143 metric 100
 ```
 
-上記は、以下のnetplan設定ファイル(yamlファイル)で行われています。
+### Netplanの設定ファイル
+IPアドレスとデフォルトゲートウェイの設定は、以下のNetplan設定ファイル(YAMLファイル)で行われています。
+
 ```
 ubuntu@ubuntu2604:~$ sudo cat /etc/netplan/00-installer-config.yaml
 # This is the network config written by 'subiquity'
@@ -84,7 +90,9 @@ network:
   version: 2
 ```
 
-DHCPから固定IPに設定を変更する場合は、上記yamlファイルを変更します。
+### 固定IPアドレスへの変更
+DHCPから固定IPに設定を変更する場合は、上記YAMLファイルを変更します。
+
 ```
 network:
   version: 2
@@ -101,7 +109,9 @@ network:
         addresses: [8.8.8.8, 8.8.4.4, 1.1.1.1]
 ```
 
-変更の適用は、netplan applyを実施します。
+### Netplanの設定変更の適用
+Netplanの設定変更の適用は、netplan applyコマンドを実行します。
+
 ```
 ubuntu@ubuntu2604:/etc/netplan$ sudo netplan apply
 
@@ -123,7 +133,9 @@ ubuntu@ubuntu2604:~$ ip addr show
        valid_lft forever preferred_lft forever
 ```
 
-DNS設定はresolvectl statusコマンドで、netplanのyamlファイルの結果は/run/systemd/network/10-netplan-enp0s3.networkというファイルに反映されています。
+### DNS設定の確認
+DNS設定はresolvectl statusコマンドで確認できます。
+
 ```
 ubuntu@ubuntu2604:~$ resolvectl status enp0s3
 Link 2 (enp0s3)
@@ -133,6 +145,11 @@ Current DNS Server: 8.8.8.8
        DNS Servers: 8.8.8.8 8.8.4.4 1.1.1.1
      Default Route: yes
 ```
+
+### Netplanから生成されたコンフィグの確認
+NetplanのYAMLファイルから生成されたコンフィグは、/run/systemd/network/10-netplan-enp0s3.networkというファイルに反映されています。
+
+Ubuntu Serverのレンダラーであるsystemd-networkdはこのファイルを読み込んでネットワークの設定を行っています。
 
 ```
 ubuntu@ubuntu2604:~$ sudo cat /run/systemd/network/10-netplan-enp0s3.network
