@@ -96,7 +96,7 @@ Copyright©️ LPI-Japan. All Rights Reserved.
 https://linuc.org/textbooks/network/
 ```
 
-![https://linuc.org/textbooks/server/](image/Ch0/QRserver.png){width=25%}
+![https://linuc.org/textbooks/network/](image/Ch0/QRnetwork.png){width=25%}
 
 ## 本教科書の使用に関するお問合せ先 {.unlisted .unnumbered}
 特定非営利活動法人エルピーアイジャパン（LPI-Japan）事務局
