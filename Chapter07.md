@@ -132,7 +132,9 @@ Link 2 (enp0s3)
 Current DNS Server: 8.8.8.8
        DNS Servers: 8.8.8.8 8.8.4.4 1.1.1.1
      Default Route: yes
+```
 
+```
 ubuntu@ubuntu2604:~$ sudo cat /run/systemd/network/10-netplan-enp0s3.network
 [Match]
 Name=enp0s3
