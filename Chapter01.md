@@ -318,8 +318,6 @@ VirtualBoxの高度な設定を有効化するには、「Oracle VirtualBox マ�
 
 ウインドウ左上の「高度」をクリックし、「OK」ボタンをクリックします。
 
-![設定が基本の状態](image/Ch01/config_basic.png){width=70%}
-
 ![設定を高度に変更](image/Ch01/config_advance.png){width=70%}
 
 Oracle VirtualBox マネージャーの左側の選択肢が増えており、ネットワーク設定ツールが使用可能になっていることが確認できます。
