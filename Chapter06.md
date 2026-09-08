@@ -115,6 +115,8 @@ Linuxでサーバーを動作させていると、ネットワーク障害が発
 
 ![仮想マシンにネットワークアダプター3を追加](image/Ch06/config_add_network3.png){width=70%}
 
+\pagebreak
+
 ![仮想マシンにネットワークアダプター4を追加](image/Ch06/config_add_network4.png){width=70%}
 
 
