@@ -28,14 +28,13 @@ Ubuntu Desktopでは、AlmaLinux同様にGUI設定ツールやnmtuiコマンド�
 
 タスクバー(画面の例だと右上)から設定アイコンをクリックし、ネットワークメニューから設定を行います。
 
-![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network2.png){width=70%}
+![画面右上の設定アイコン](image/Ch07/ubuntu_network2.png){width=70%}
 
 以下の例では、DHCPでネットワーク設定を行っています。
 
-![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network3.png){width=70%}
+![ネットワーク設定画面](image/Ch07/ubuntu_network3.png){width=70%}
 
 ![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network4.png){width=70%}
-
 
 ### 固定IPアドレスを設定する
 固定IPアドレスなどを設定する場合、手動を選択します。
