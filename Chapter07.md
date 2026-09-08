@@ -34,17 +34,21 @@ Ubuntu Desktopでは、AlmaLinux同様にGUI設定ツールやnmtuiコマンド�
 
 ![ネットワーク設定画面](image/Ch07/ubuntu_network3.png){width=70%}
 
-![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network4.png){width=70%}
+\pagebreak
+
+![DHCPでネットワーク設定](image/Ch07/ubuntu_network4.png){width=70%}
+
+\pagebreak
 
 ### 固定IPアドレスを設定する
 固定IPアドレスなどを設定する場合、手動を選択します。
 
-![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network5.png){width=70%}
+![手動でネットワーク設定](image/Ch07/ubuntu_network5.png){width=70%}
 
 ### Wi-Fiを設定する
 また、無線NW(Wi-Fi)は、Wi-Fiメニューから設定を行います。
 
-![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network6.png){width=70%}
+![Wi-Fi設定画面](image/Ch07/ubuntu_network6.png){width=70%}
 
 ## Ubuntu Serverでのネットワーク設定
 Ubuntu ServerではCLI(コマンド)操作でネットワーク設定を行います。
@@ -194,7 +198,7 @@ ubuntu@ubuntu2604:~$ sudo apt install apache2
 
 インストール後、UbuntuのIP宛てに他PCのブラウザよりアクセスすると、「It works!」と書かれたデフォルトページが表示されます。初期状態ではUFWは非アクティブとなっており、Ubuntuへアクセスしてくる通信は制御していません。
 
-![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network7.png){width=70%}
+![Webサーバのデフォルトページ](image/Ch07/ubuntu_network7.png){width=70%}
 
 では、UFWの設定を行います。
 
@@ -268,6 +272,6 @@ To                         Action      From
 
 設定後、再度ブラウザからアクセスすると、通信が拒否され表示できないメッセージが返されます。
 
-![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network8.png){width=70%}
+![Webブラウザのエラー画面](image/Ch07/ubuntu_network8.png){width=70%}
 
 \pagebreak
