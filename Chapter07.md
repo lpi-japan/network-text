@@ -272,6 +272,6 @@ To                         Action      From
 
 設定後、再度ブラウザからアクセスすると、通信が拒否され表示できないメッセージが返されます。
 
-![Webブラウザのエラー画面](image/Ch07/ubuntu_network8.png){width=70%}
+![Webブラウザのアクセスエラー画面](image/Ch07/ubuntu_network8.png){width=70%}
 
 \pagebreak
