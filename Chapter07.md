@@ -33,6 +33,7 @@ Ubuntu Desktopでは、AlmaLinux同様にGUI設定ツールやnmtuiコマンド�
 以下の例では、DHCPでネットワーク設定を行っています。
 
 ![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network3.png){width=70%}
+
 ![Ubuntuのネットワーク管理](image/Ch07/ubuntu_network4.png){width=70%}
 
 
