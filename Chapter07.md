@@ -38,12 +38,12 @@ Ubuntu Desktopでは、AlmaLinux同様にGUI設定ツールやnmtuiコマンド�
 
 ![DHCPでネットワーク設定](image/Ch07/ubuntu_network4.png){width=70%}
 
-\pagebreak
-
 ### 固定IPアドレスを設定する
 固定IPアドレスなどを設定する場合、手動を選択します。
 
 ![手動でネットワーク設定](image/Ch07/ubuntu_network5.png){width=70%}
+
+\pagebreak
 
 ### Wi-Fiを設定する
 また、無線NW(Wi-Fi)は、Wi-Fiメニューから設定を行います。
