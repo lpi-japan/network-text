@@ -266,8 +266,6 @@ $ sudo nmtui
 1. ESCキーを押します。
 1. 最初の画面に戻るので、ESCキーを押してnmtuiコマンドを終了します。
 
-\pagebreak
-
 ![「NetworkManager TUI」インターフェース選択画面](image/Ch02/nmtui_interface.png){width=70%}
 
 ![「NetworkManager TUI」IPアドレス設定画面](image/Ch02/nmtui_ipv4.png){width=70%}
@@ -390,8 +388,6 @@ VirtualBoxのDHCPサーバー機能は、NATおよびホストオンリーネッ
 ホストオンリーネットワークのDHCPサーバーの設定は、1章で確認したVirtualBoxのネットワーク設定ツールで確認、変更が行えます。
 
 ![DHCPサーバーの設定](image/Ch01/config_dhcp.png){width=70%}
-
-\pagebreak
 
 デフォルトの設定で、DHCPサーバーはDHCPクライアントに対して192.168.56.101から192.168.56.254までのIPアドレスを割り当てるのがわかります。
 
