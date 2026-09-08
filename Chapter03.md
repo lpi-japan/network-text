@@ -211,5 +211,5 @@ Wiresharkのウインドウ真ん中のペインで、「Internet Control Messag
 
 Echo requestは、ICMPのTypeが8、Echo replyはTypeが0になっており、非常にシンプルな通信を行っていることが分かります。
 
-
+\pagebreak
 

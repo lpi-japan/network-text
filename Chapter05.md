@@ -440,8 +440,5 @@ $ sudo tail -f /var/log/squid/access.log
 1783427785.546   6790 192.168.56.102 TCP_TUNNEL/200 15772 CONNECT linuc.org:443 - HIER_DIRECT/219.94.236.161 -
 ```
 
-
-
-
-
+\pagebreak
 
