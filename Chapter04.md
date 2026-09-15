@@ -4,9 +4,9 @@
 ネットワークのセキュリティを高める目的で、ファイアーウォールとして機能させることが多いので、しっかりとその原理を理解しておきましょう。
 
 ## Linuxのパケットフィルタリング機能nftables
-Linuxのパケットフィルタリングは、Linuxカーネルの機能であるnftablesとして実装されています。nftablesに関連するカーネルモジュールを読み込ませることで利用できます。
+Linuxのパケットフィルタリングは、nftablesとして実装されています。nftablesに関連するカーネルモジュールを読み込ませることで利用できます。
 
-nftablesはカーネルの機能ですが、その設定はコマンドなどで行う必要があります。基本的なツールとしてnftコマンドが用意されていますが、実習環境であるAlmaLinuxではfirewalldがフロントエンドとして採用されています。
+nftablesの設定を行う基本的なツールとしてnftコマンドが用意されていますが、実習環境であるAlmaLinuxではfirewalldがフロントエンドとして採用されています。
 
 ### カーネルモジュールの確認
 nftables関連のカーネルモジュールが読み込まれているかどうか確認してみましょう。
@@ -220,9 +220,9 @@ C:\Users\LinuC>ping 192.168.56.101
 ターゲットをDROPにすると、nftablesはパケットを拒否したことを通知しません。そのため、pingコマンドはEcho requestに対するEcho replyが返って来ず、タイムアウトしたことを表示します。
 
 ## ICMPの扱い
-ターゲットがdefaultの時、ICMPは受け入れますが、細かい扱いは別途設定されています。
+ターゲットがdefaultの時、ICMPは受け入れますが、細かい扱いは別途icmp-blocksとicmp-block-inversionで設定されています。inversionは「反転する」という意味で、icmp-blocksで設定した種類のICMPを拒否するのか、受け入れるのかをicmp-block-inversionで設定します。
 
-icmp-block-inversionをnoに設定すると、icmp-blocksで設定したICMPを拒否します。yesに設定すると、icmp-blocksで設定したICMPを受け入れます。
+icmp-block-inversionをnoに設定すると、icmp-blocksで設定した種類のICMPを拒否します。yesに設定すると、icmp-blocksで設定した種類のICMPを受け入れます。
 
 ### ターゲットをdefaultに設定
 ターゲットをdefaultに設定します。
@@ -240,7 +240,7 @@ $ sudo firewall-cmd --list-icmp-blocks
 
 ```
 
-icmp-block-inversionはnoなのでicmp-blocksで設定したICMPを拒否しますが、icmp-blocksには何も設定されていないので何も拒否しません。
+icmp-block-inversionはnoなのでicmp-blocksで設定したICMPを拒否しますが、icmp-blocksには何も設定されていないので、何も拒否せず、すべての種類のICMPを受け入れます。
 
 ホストOSからpingコマンドを実行すると、応答が返ってきます。
 
@@ -261,7 +261,7 @@ Ctrl+C
 ```
 
 ### icmp-block-inversionの設定
-icmp-block-inversionをyesに設定するためには、firewall-cmd --add-icmp-block-inversionコマンドを実行します。
+icmp-block-inversionをyesに設定するためには、firewall-cmd --add-icmp-block-inversionコマンドを実行します。この設定で、icmp-blocksには何も設定されていないので、すべての種類のICMPを拒否することになります。
 
 ```
 $ sudo firewall-cmd --zone=public --add-icmp-block-inversion
