@@ -187,7 +187,7 @@ Gateway=192.168.1.1
 https://netplan.readthedocs.io/en/stable/multi-nic-vm-host-with-bonds-and-vlans/
 
 ## パケットフィルタリング
-Ubuntuのパケットフィルタリングでは、UFW(Uncomplicated FireWall)を使用します。
+Ubuntuのパケットフィルタリングでは、UFW(Uncomplicated Firewall)を使用します。
 
 UFWの動作を確認するため、Webサーバであるapache2をインストールします。
 ```
