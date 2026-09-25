@@ -102,6 +102,8 @@ Copyright©️ LPI-Japan. All Rights Reserved.
 ### 改変禁止 {.unlisted .unnumbered}
 本教科書は、改変せず使用してください。本教科書に対する改変は、特定非営利活動法人エルピーアイジャパンまたは特定非営利活動法人エルピーアイジャパンが認める団体により行われています。
 
+\pagebreak
+
 ## フィードバック {.unlisted .unnumbered}
 フィードバックは誰でも参加できる Slack で受け付けていますので、積極的にご参加ください。Slack参加の詳細は以下の本教科書のWebページを参照してください。
 
@@ -127,7 +129,7 @@ Linux技術者認定「LinuC（リナック）」とは、クラウド／DX時�
 
 LinuCの出題範囲策定や試験開発は、実際に現場で活躍しているハイレベルなITエンジニアが参加するコミュニティによって行われています。そのため、グローバルで業界標準として利用されている技術領域をカバーし、システム開発や運用管理の現場で本当に必要とされる知識や実践的なスキルを問う内容になっています。その結果として従来型のLinux領域にとどまった技術認定とは異なり、国内・海外を問わず活躍を目指すITエンジニアにとって、実践的かつ有用な技術者認定となっています。
 
-![LinuCの体系図](image/Ch0/taikei.png){width=50%}
+![LinuCの体系図](image/Ch0/taikei.png){width=70%}
 
 ### LinuCレベル１ {.unlisted .unnumbered}
 コンピュータシステムを理解し、仮想環境を含むLinuxシステムの基本操作とシステム管理が行える即戦力エンジニアの証明（ITSSレベル1）
@@ -141,6 +143,8 @@ LinuCの出題範囲策定や試験開発は、実際に現場で活躍してい
 ### LinuCレベル４&nbsp;システムアーキテクト {.unlisted .unnumbered}
 オンプレ／クラウド、物理／仮想化を含むシステムのライフサイクル全体を俯瞰して最適なアーキテクチャを設計・構築ができる上級エンジニアの証明（ITSSレベル4）
 
+\pagebreak
+
 LinuCの詳細については、以下のWebサイトを参照してください。
 
 ```
@@ -148,8 +152,6 @@ https://linuc.org/about/01.html
 ```
 
 ![https://linuc.org/about/01.html](image/Ch0/QRaboutLinuC.png){width=25%}
-
-\pagebreak
 
 
 ### LinuCの認定取得に向けた学習方法 {.unlisted .unnumbered}
