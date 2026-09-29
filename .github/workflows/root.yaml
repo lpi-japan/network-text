@@ -1,7 +1,5 @@
 name: root build
 
-# ブランチ名制限なし・path 制限なし。
-# 毎回キャッシュ付きで image を建て、その SHA タグで原稿をビルドする。
 on:
   workflow_dispatch:
   push:
@@ -10,7 +8,29 @@ permissions:
   contents: read
 
 jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      editions: ${{ github.event_name == 'workflow_dispatch' && '["root"]' || steps.filter.outputs.changes }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dorny/paths-filter@v4
+        id: filter
+        if: github.event_name == 'push'
+        with:
+          filters: |
+            root:
+              - "Chapter*.md"
+              - "image/**"
+              - "config-pdf.yaml"
+              - "config-epub.yaml"
+              - "crossref.yaml"
+              - "build/**"
+              - ".github/workflows/**"
+
   build-container:
+    needs: detect
+    if: needs.detect.outputs.editions != '[]'
     permissions:
       contents: read
       packages: write
@@ -18,7 +38,8 @@ jobs:
     uses: ./.github/workflows/build-container.yaml
 
   build-manuscript:
-    needs: build-container
+    needs: [detect, build-container]
+    if: needs.detect.outputs.editions != '[]'
     permissions:
       contents: read
       packages: read

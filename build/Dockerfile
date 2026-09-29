@@ -17,7 +17,7 @@ COPY --from=0 /tmp/fonts/ /usr/local/share/fonts
 RUN fc-cache -f
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl fonts-takao fonts-ipafont xz-utils \
+    && apt-get install -y --no-install-recommends curl fonts-takao fonts-ipafont git xz-utils \
     && rm -rf /var/lib/apt/lists/*
 
 COPY install-tlmgr-packages.sh /usr/local/bin/install-tlmgr-packages.sh

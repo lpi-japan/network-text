@@ -3,6 +3,8 @@ set -euo pipefail
 
 BUILD_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${BUILD_DIR}/.." && pwd)"
+# shellcheck source=git-metadata.sh
+source "${BUILD_DIR}/git-metadata.sh"
 OUT_DIR="${ROOT_DIR}/tmp"
 VER="$(grep -oP 'Ver\.\d+\.\d+\.\d+' "${ROOT_DIR}/config-pdf.yaml" | head -1 | sed 's/^Ver\.//')"
 OUTPUT_PDF="${OUT_DIR}/networktext_${VER}.pdf"
@@ -40,6 +42,9 @@ build_one() {
   local -a extra=()
   if [[ "${no_cover}" == "1" ]]; then
     extra=(-M no-cover=true)
+  fi
+  if meta="$(git_build_metadata "${ROOT_DIR}" 2>/dev/null)"; then
+    extra+=(-M "keywords=${meta}")
   fi
   pandoc Chapter00.md -o preface.tex
   pandoc -d config-pdf.yaml --template build/template.tex -B preface.tex "${chapters[@]}" \

@@ -3,6 +3,8 @@ set -euo pipefail
 
 TOOL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${TOOL_DIR}/.." && pwd)"
+# shellcheck source=git-metadata.sh
+source "${TOOL_DIR}/git-metadata.sh"
 OUT_DIR="${ROOT_DIR}/tmp"
 HL_CSS_KINDLE="${OUT_DIR}/.highlighting-kindle.css"
 VER="$(grep -oP 'Ver\.\d+\.\d+\.\d+' "${ROOT_DIR}/config-epub.yaml" | head -1 | sed 's/^Ver\.//')"
@@ -55,6 +57,11 @@ PY
 
 prepare_kindle_highlighting_css
 
+epub_extra=()
+if meta="$(git_build_metadata "${ROOT_DIR}" 2>/dev/null)"; then
+  epub_extra=(-M "description=${meta}")
+fi
+
 (
   cd "${ROOT_DIR}"
   pandoc "${inputs[@]}" \
@@ -63,6 +70,7 @@ prepare_kindle_highlighting_css
     -o "${OUTPUT}" \
     -N \
     -M "crossrefYaml=crossref.yaml" \
+    "${epub_extra[@]}" \
     --metadata-file=config-epub.yaml \
     --epub-cover-image=image/Cover/電子版表紙_300dpi_2480x3508.png \
     --css=build/epub.css \
